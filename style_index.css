@@ -1,0 +1,15 @@
+h1{
+	text-align: center;
+	margin-top: 154px;
+	font-size: 50px;
+}
+
+
+.find-btn{
+	text-align: center;
+}
+.find-btn1{
+	display :inline-block;
+	width: 100px;
+	height: 50px;
+}
