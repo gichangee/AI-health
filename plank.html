@@ -26,13 +26,24 @@ integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
 crossorigin="anonymous"></script>
 
 
-<div id="container">
-    
-    <span>0</span>개
-    <span2>0</span2>kcal소모<br>
-    <button id="reset">초기화</button>
-
-</div>
+<div class="stopwatch">
+        <div class="stopwatch__container">
+            <div class="stopwatch__header">Stop Watch</div>
+            <div class="stopwatch__content">
+                <div class="stopwatch__time">
+                    <span id="hour">00</span>:
+                    <span id="minute">00</span>:
+                    <span id="seconde">00</span>
+                </div>
+                <div class="stopwatch__buttons">
+                    <button class="stopwatch__start">Start</button>
+                    <button class="stopwatch__stop">Stop</button>
+                    <button class="stopwatch__reset">Reset</button>
+                </div>
+            </div>
+            <div class="stopwatch__history"></div>
+        </div>
+    </div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
@@ -171,5 +182,84 @@ reset.addEventListener('click',function(){
 
 </script>
     
+
+<script>
+
+    const startBtn = document.querySelector('.stopwatch__start');
+    const stopBtn = document.querySelector('.stopwatch__stop');
+    const resetBtn = document.querySelector('.stopwatch__reset');
+    const hourContent = document.getElementById("hour");
+    const minuteContent = document.getElementById("minute");
+    const secondeContent = document.getElementById("seconde");
+    let watchInterval;
+
+    //Events
+    eventListners();
+    function eventListners() {
+        if (resetBtn) {
+            resetBtn.addEventListener('click', resetWatch);
+        }
+        if (startBtn) {
+            startBtn.addEventListener('click', startWatch);
+        }
+
+        if (stopBtn) {
+            stopBtn.addEventListener('click', stopWatch);
+        }
+    }
+
+    //Functions
+    function resetWatch() {
+        hourContent.innerHTML = '00';
+        minuteContent.innerHTML = '00';
+        secondeContent.innerHTML = '00';
+        stopWatch();
+    }
+
+    function startWatch() {
+        var seconde = parseInt(secondeContent.textContent.trim());
+        watchInterval = setInterval(() => {
+            seconde += 1;
+            if(seconde == 60){
+                seconde = 0;
+                var minute = parseInt(minuteContent.textContent.trim());
+                minute++;
+                if(minute == 60){
+                    minute = 0;
+                    var hour = parseInt(hourContent.textContent.trim());
+                    hour++;
+                    if(hour == 24){
+                        hour = 0;
+                    }
+                    if (hour < 10) {
+                        hourContent.innerHTML = "0" + hour;
+                    }
+                    else {
+                        hourContent.innerHTML = hour;
+                    }    
+                }
+                if (minute < 10) {
+                    minuteContent.innerHTML = "0" + minute;
+                }
+                else {
+                    minuteContent.innerHTML = minute;
+                }    
+            }
+            if (seconde < 10) {
+                secondeContent.innerHTML = "0" + seconde;
+            }
+            else {
+                secondeContent.innerHTML = seconde;
+            }
+
+        }, 1000);
+    }
+
+    function stopWatch() {
+        if (watchInterval) {
+            clearInterval(watchInterval);
+        }
+    }
+</script>
 </body>
 </html>
