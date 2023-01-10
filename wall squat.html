@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 헬스 트레이너</title>
     <link rel="stylesheet" href="style_wall squat.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -26,30 +27,19 @@ integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
 crossorigin="anonymous"></script>
 
 
-<div class="stopwatch">
-        <div class="stopwatch__container">
-            <div class="stopwatch__header">Stop Watch</div>
-            <div class="stopwatch__content">
-                <div class="stopwatch__time">
-                    <span id="hour">00</span>:
-                    <span id="minute">00</span>:
-                    <span id="seconde">00</span>
-                </div>
-                <div class="stopwatch__buttons">
-                    <button class="stopwatch__start">Start</button>
-                    <button class="stopwatch__stop">Stop</button>
-                    <button class="stopwatch__reset">Reset</button>
-                </div>
-            </div>
-            <div class="stopwatch__history"></div>
-        </div>
-    </div>
+<div class="controls">
+    <button id="reset">Reset</button>
+    <button id="start">Start</button>
+    <button id="pause">Pause</button>
+    <h2 id="timeDisplay">Time elapsed: </h2>
+  </div>
 
-    <div><canvas id="canvas"></canvas></div>
-    <div id="label-container"></div>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
     <script type="text/javascript">
+
+
+
         // More API functions here:
         // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
     
@@ -91,36 +81,39 @@ crossorigin="anonymous"></script>
             window.requestAnimationFrame(loop);
         }
     
-        var status = "stand"
-
-
         async function predict() {
-            // Prediction #1: run input through posenet
-            // estimatePose can take in an image, video or canvas html element
-            const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
-            // Prediction 2: run input through teachable machine classification model
-            const prediction = await model.predict(posenetOutput);
-    
+        // Prediction #1: run input through posenet
+        // estimatePose can take in an image, video or canvas html element
+        const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+        // Prediction 2: run input through teachable machine classification model
+        const prediction = await model.predict(posenetOutput);
+
+
         if (prediction[0].probability.toFixed(2) > 0.90) 
         {
+                if (status == "squat") 
+                {
+                    Pause();
+                }
                 status = "stand"
-                stopWatch();
         } 
         else if (prediction[1].probability.toFixed(2) == 1.00) 
         {
                 status = "squat"
-                startWatch()
-
+                Start();
         } 
         else if (prediction[2].probability.toFixed(2) == 1.00) 
         {
-            stopWatch();
+                if (status == "squat" || status == "stand") 
+                {
+                    Pause();
+                }
+                status = "not squart"
         }
 
 
-
-
-            for (let i = 0; i < maxPredictions; i++) {
+            for (let i = 0; i < maxPredictions; i++) 
+            {
                 const classPrediction =
                     prediction[i].className + ": " + prediction[i].probability.toFixed(2);
                 labelContainer.childNodes[i].innerHTML = classPrediction;
@@ -128,8 +121,8 @@ crossorigin="anonymous"></script>
     
             // finally draw the poses
             drawPose(pose);
+        
         }
-    
         function drawPose(pose) {
             if (webcam.canvas) {
                 ctx.drawImage(webcam.canvas, 0, 0);
@@ -142,84 +135,55 @@ crossorigin="anonymous"></script>
             }
         }
 
+$( "#reset" ).click(Reset);
+$( "#start" ).click(Start);
+$( "#pause" ).click(Pause);
 
-    const startBtn = document.querySelector('.stopwatch__start');
-    const stopBtn = document.querySelector('.stopwatch__stop');
-    const resetBtn = document.querySelector('.stopwatch__reset');
-    const hourContent = document.getElementById("hour");
-    const minuteContent = document.getElementById("minute");
-    const secondeContent = document.getElementById("seconde");
-    let watchInterval;
+var timerId;
+var time = 0;
+var seconds;
 
-    //Events
-    eventListners();
-    function eventListners() {
-        if (resetBtn) {
-            resetBtn.addEventListener('click', resetWatch);
-        }
-        if (startBtn) {
-            startBtn.addEventListener('click', startWatch);
-        }
-
-        if (stopBtn) {
-            stopBtn.addEventListener('click', stopWatch);
-        }
-    }
-
-    //Functions
-    function resetWatch() {
-        hourContent.innerHTML = '00';
-        minuteContent.innerHTML = '00';
-        secondeContent.innerHTML = '00';
-        stopWatch();
-    }
-
-    function startWatch() {
-        var seconde = parseInt(secondeContent.textContent.trim());
-        watchInterval = setInterval(() => {
-            seconde += 1;
-            if(seconde == 60){
-                seconde = 0;
-                var minute = parseInt(minuteContent.textContent.trim());
-                minute++;
-                if(minute == 60){
-                    minute = 0;
-                    var hour = parseInt(hourContent.textContent.trim());
-                    hour++;
-                    if(hour == 24){
-                        hour = 0;
-                    }
-                    if (hour < 10) {
-                        hourContent.innerHTML = "0" + hour;
-                    }
-                    else {
-                        hourContent.innerHTML = hour;
-                    }    
-                }
-                if (minute < 10) {
-                    minuteContent.innerHTML = "0" + minute;
-                }
-                else {
-                    minuteContent.innerHTML = minute;
-                }    
-            }
-            if (seconde < 10) {
-                secondeContent.innerHTML = "0" + seconde;
-            }
-            else {
-                secondeContent.innerHTML = seconde;
-            }
-
-        }, 1000);
-    }
-
-    function stopWatch() {
-        if (watchInterval) {
-            clearInterval(watchInterval);
-        }
-    }
+// Call this function to update the text display
+function UpdateText( seconds ) {  
+  // timeElapsed += seconds;
+  $( "#timeDisplay" ).text("Time elapsed: " + seconds + 's');
+}
 
 
+function UpdateTime() {
+  seconds++;
+  UpdateText(seconds);
+}
+
+function Reset() {
+  console.log("Reset Clicked");
+  seconds = 0;
+  UpdateText(seconds)
+
+}
+
+function Start() {
+  console.log("Start Clicked");
+  // fix the start button bug for multiple clicks
+  window.clearInterval(timerId);
+  timerId = window.setInterval(UpdateTime, 1000);
+}
+
+function Pause() {
+  console.log("Pause Clicked");
+  window.clearInterval(timerId);
+  UpdateText(seconds)
+}
+
+Reset();
 </script>
+
+
+
+
+
+<script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+<script src="timers.js"></script>
+
 </body>
 </html>
