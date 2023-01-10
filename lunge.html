@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 헬스 트레이너</title>
-    <link rel="stylesheet" href="style_pushup.css">
+    <link rel="stylesheet" href="style_lunge.css">
 </head>
 <body>
 
-<h1>푸쉬업</h1>
+<h1>런지</h1>
 
 <div class="find-btn">
     <button type="button" class="find-btn1" onclick="init()">시작</button>
@@ -30,8 +30,7 @@ crossorigin="anonymous"></script>
 
 <div id="container">
     
-    <span>0</span>개
-    <span2>0</span2>kcal소모<br>
+    <span>0</span>개<br>
     <button id="reset">초기화</button>
 
 </div>
@@ -97,7 +96,7 @@ crossorigin="anonymous"></script>
         //추가
         let container = document.querySelector('#container');
         const number = container.querySelector('span');
-        const number2 = container.querySelector('span2');
+    
 
         if (prediction[0].probability.toFixed(2) > 0.90) 
         {
@@ -108,9 +107,6 @@ crossorigin="anonymous"></script>
                     count++;
                     number.textContent = count;
 
-                    let count2 = Number(number2.textContent)
-                    count2=count2+0.4;
-                    number2.textContent = count2;
 
                     var audio = new Audio(count % 10 + '.mp3');
                     audio.play();
@@ -160,16 +156,16 @@ crossorigin="anonymous"></script>
 <script>
     let container = document.querySelector('#container');
     const number = container.querySelector('span');
-    const number2 = container.querySelector('span2');
+   
     const reset = container.querySelector('#reset');
  
     reset.addEventListener('click',function(){
         let count = Number(number.textContent)
-        let count2 = Number(number2.textContent)
+       
         count = 0;
-        count2 = 0;
+       
         number.textContent = count;
-        number2.textContent = count2;
+     
     });
 
 

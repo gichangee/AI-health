@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 헬스 트레이너</title>
-    <link rel="stylesheet" href="style_plank.css">
+    <link rel="stylesheet" href="style_wall squat.css">
 </head>
 <body>
 
-<h1>플랭크</h1>
+<h1>벽 스쿼트</h1>
 
 <div class="find-btn">
     <button type="button" class="find-btn1" onclick="init()">시작</button>
@@ -104,7 +104,7 @@ async function predict() {
     //추가
     let container = document.querySelector('#container');
     const number = container.querySelector('span');
-    const number2 = container.querySelector('span2');
+  
 
     if (prediction[0].probability.toFixed(2) > 0.90) 
     {
@@ -115,9 +115,7 @@ async function predict() {
                 count++;
                 number.textContent = count;
 
-                let count2 = Number(number2.textContent)
-                count2=count2+0.4;
-                number2.textContent = count2;
+    
 
                 var audio = new Audio(count % 10 + '.mp3');
                 audio.play();
@@ -172,11 +170,11 @@ const reset = container.querySelector('#reset');
 
 reset.addEventListener('click',function(){
     let count = Number(number.textContent)
-    let count2 = Number(number2.textContent)
+ 
     count = 0;
-    count2 = 0;
+
     number.textContent = count;
-    number2.textContent = count2;
+ 
 });
 
 

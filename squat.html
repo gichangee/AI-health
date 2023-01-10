@@ -29,8 +29,7 @@ crossorigin="anonymous"></script>
 
 <div id="container">
     
-    <span>0</span>개
-    <span2>0</span2>kcal소모<br>
+    <span>0</span>개<br>
     <button id="reset">초기화</button>
 
 </div>
@@ -95,7 +94,7 @@ crossorigin="anonymous"></script>
         //추가
         let container = document.querySelector('#container');
         const number = container.querySelector('span');
-        const number2 = container.querySelector('span2');
+     
 
         if (prediction[0].probability.toFixed(2) > 0.90) 
         {
@@ -106,9 +105,7 @@ crossorigin="anonymous"></script>
                     count++;
                     number.textContent = count;
 
-                    let count2 = Number(number2.textContent)
-                    count2=count2+0.3;
-                    number2.textContent = count2;
+                 
 
                     var audio = new Audio(count % 10 + '.mp3');
                     audio.play();
@@ -158,16 +155,16 @@ crossorigin="anonymous"></script>
 <script>
     let container = document.querySelector('#container');
     const number = container.querySelector('span');
-    const number2 = container.querySelector('span2');
+
     const reset = container.querySelector('#reset');
  
     reset.addEventListener('click',function(){
         let count = Number(number.textContent)
-        let count2 = Number(number2.textContent)
+      
         count = 0;
-        count2 = 0;
+       
         number.textContent = count;
-        number2.textContent = count2;
+     
     });
 
 
