@@ -33,8 +33,8 @@ crossorigin="anonymous"></script>
     <button id="reset">초기화</button>
 
 </div>
-
-
+<div><canvas id="canvas"></canvas></div>
+<div id="label-container"></div>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
 <script type="text/javascript">
@@ -79,10 +79,7 @@ crossorigin="anonymous"></script>
         window.requestAnimationFrame(loop);
     }
 
-
-    //추가
     var status = "stand"
-
 
     async function predict() {
         // Prediction #1: run input through posenet
@@ -91,11 +88,13 @@ crossorigin="anonymous"></script>
         // Prediction 2: run input through teachable machine classification model
         const prediction = await model.predict(posenetOutput);
 
+
         //추가
         let container = document.querySelector('#container');
         const number = container.querySelector('span');
-     
+        
 
+        
         if (prediction[0].probability.toFixed(2) > 0.90) 
         {
                 if (status == "squat") 
@@ -127,7 +126,6 @@ crossorigin="anonymous"></script>
                 status = "bent"
         }
 
-
         for (let i = 0; i < maxPredictions; i++) {
             const classPrediction =
                 prediction[i].className + ": " + prediction[i].probability.toFixed(2);
@@ -150,6 +148,10 @@ crossorigin="anonymous"></script>
         }
     }
 </script>
+
+   
+
+    
 
 
 <script>
