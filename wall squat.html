@@ -91,27 +91,16 @@ crossorigin="anonymous"></script>
 
         if (prediction[0].probability.toFixed(2) > 0.90) 
         {
-                if (status == "squat") 
-                {
                     Pause();
-                }
-                status = "stand"
         } 
         else if (prediction[1].probability.toFixed(2) == 1.00) 
         {
-                status = "squat"
                 Start();
         } 
         else if (prediction[2].probability.toFixed(2) == 1.00) 
         {
-                if (status == "squat" || status == "stand") 
-                {
                     Pause();
-                }
-                status = "not squart"
         }
-
-
             for (let i = 0; i < maxPredictions; i++) 
             {
                 const classPrediction =
