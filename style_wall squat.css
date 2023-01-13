@@ -23,32 +23,11 @@ h1{
 }
 
 
-#container{
-    text-align: center;
-    font-size: 40px;
-}
-
 #label-container{
     text-align: center;
 }
 
-.timer
-{
-    font-size: 80px
+
+.controls{
+    text-align: center;
 }
- 
-#output {
-    font-size: 8.0em;
-    width: 43%;
-    height: auto;
-    background-color: white;
-    border: 3px solid black;
-    margin-right: auto;
-    margin-left: auto;
-    margin-top: 45px;
-  }
-  
-  .btn {
-    margin-top: 40px;
-    font-size: 1.8em;
-  }
