@@ -11,6 +11,21 @@ h1{
 	height: 50px;
 }
 
+.find-btn2{
+	display :inline-block;
+	width: 100px;
+	height: 50px;
+}
+
+#canvas{
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-top: 50px;
+}
+
 #canvas2{
     padding-left: 0;
     padding-right: 0;
