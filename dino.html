@@ -11,7 +11,7 @@
 
     <h1>스쿼트 게임</h1>
     <div class="find-btn">
-        <button type="button" class="find-btn1" onclick="init(); 프레임마다실행할거()">시작</button>
+        <button type="button" class="find-btn1" onclick="init(); 프레임마다실행할거(); Start()">시작</button>
         <button type="button" class="find-btn1" onclick="location.href='index.html'">뒤로가기</button>
     </div>
 
@@ -26,9 +26,11 @@
     
 
     <canvas id="canvas"  style="border:solid 1px #000000"></canvas>
+    <h2 id="timeDisplay">점수: </h2>
     
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <script type="text/javascript">
         // More API functions here:
@@ -186,8 +188,9 @@ function 프레임마다실행할거(){
     animation = requestAnimationFrame(프레임마다실행할거);
     timer++;
     ctx.clearRect(0,0 ,canvas.width, canvas.height);
+   
 
-  
+
     const rand_300_500 = Math.floor(Math.floor(Math.random() * (700-300)+ 300) /100)*100 ;
 
     if(timer %rand_300_500 ===0){
@@ -237,6 +240,7 @@ function 프레임마다실행할거(){
     dino.draw();
 }
 
+
 //프레임마다실행할거();
 
 //충돌확인
@@ -247,7 +251,7 @@ function 충돌하냐(dino, cactus){
     var y축차이 = cactus.y -(dino.y + dino.height);
     if(x축차이 < 0 && y축차이 < 0){
         cancelAnimationFrame(animation);
-  
+        Pause();
     }
 }
 
@@ -256,6 +260,7 @@ function 재시작(){
     timer = 0;
     cactus여러개 = []
 }
+
 
 
 var 점프중 = false;
@@ -268,11 +273,47 @@ document.addEventListener('keydown', function(e){
 
     }
 })
-    </script>
+
+var seconds;
+var timerId;
+var time = 0;
+
+
+function Reset() {
+  console.log("Reset Clicked");
+  seconds = 0;
+  UpdateText(seconds)
+
+}
+
+function UpdateText( seconds ) {  
+  $( "#timeDisplay" ).text("점수: " + seconds+"점");
+}
+function UpdateTime() {
+  seconds++;
+  UpdateText(seconds);
+}
+
+
+function Start() {
+  window.clearInterval(timerId);
+  timerId = window.setInterval(UpdateTime, 1000);
+}
+
+function Pause() {
+  window.clearInterval(timerId);
+  UpdateText(seconds)
+}
+
+Reset();
+
+
+</script>
+
 
 
 <div class="find-btn">
-    <button type="button" class="find-btn2" onclick="재시작();프레임마다실행할거()">재시작</button>
+    <button type="button" class="find-btn2" onclick="재시작();프레임마다실행할거();Reset();Start()">재시작</button>
 </div>
 
 
