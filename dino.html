@@ -252,6 +252,8 @@ function 충돌하냐(dino, cactus){
     if(x축차이 < 0 && y축차이 < 0){
         cancelAnimationFrame(animation);
         Pause();
+        var audio2 = new Audio('die.mp3');
+        audio2.play();
     }
 }
 
@@ -271,6 +273,8 @@ document.addEventListener('keydown', function(e){
         점프중 = true;
         더블점프 = false;
 
+        var audio = new Audio('jump.mp3');
+        audio.play();
     }
 })
 
