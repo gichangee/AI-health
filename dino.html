@@ -16,17 +16,15 @@
     </div>
 
     <div>
-        <canvas id="canvas2">
-        </canvas>
+        <canvas id="canvas2"></canvas>
     </div>
 
     
     <div id="label-container"></div>
-    
-    
-
     <canvas id="canvas"  style="border:solid 1px #000000"></canvas>
     <h2 id="timeDisplay">점수: </h2>
+    <h3 id="timeDisplay2">최고점수: 0점</h3>
+
     
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
@@ -85,17 +83,11 @@
     
     
             //추가
-      
-         
-            
             if (prediction[0].probability.toFixed(2) > 0.90) 
             {
                     if (status == "squat") 
-                    {
-                       
+                    {   
                         점프중 = true;
-    
-                
                     }
                     status = "stand"
             } 
@@ -150,10 +142,10 @@ var dino={
     width:50,
     height:50,
 
-    draw(){
+    draw()
+    {
         ctx.fillStyle='green';
         ctx.fillRect(this.x,this.y,this.width,this.height);
-       
     }
 }
 
@@ -182,14 +174,12 @@ var 점프timer =0;
 var animation;
 
 
-
 //1초에 60번 실행
 function 프레임마다실행할거(){
     animation = requestAnimationFrame(프레임마다실행할거);
     timer++;
     ctx.clearRect(0,0 ,canvas.width, canvas.height);
    
-
 
     const rand_300_500 = Math.floor(Math.floor(Math.random() * (700-300)+ 300) /100)*100 ;
 
@@ -252,6 +242,12 @@ function 충돌하냐(dino, cactus){
     if(x축차이 < 0 && y축차이 < 0){
         cancelAnimationFrame(animation);
         Pause();
+        
+        if(data < seconds)
+        {
+            UpdateScore();
+        }
+        
         var audio2 = new Audio('die.mp3');
         audio2.play();
     }
@@ -281,10 +277,15 @@ document.addEventListener('keydown', function(e){
 var seconds;
 var timerId;
 var time = 0;
+var data=0;
 
+function UpdateScore(){
+    data=seconds;
+    $( "#timeDisplay2" ).text("최고점수: " + data+"점");
+    
+}
 
 function Reset() {
-  console.log("Reset Clicked");
   seconds = 0;
   UpdateText(seconds)
 
@@ -310,8 +311,6 @@ function Pause() {
 }
 
 Reset();
-
-
 </script>
 
 
@@ -320,7 +319,5 @@ Reset();
     <button type="button" class="find-btn2" onclick="재시작();프레임마다실행할거();Reset();Start()">재시작</button>
 </div>
 
-
-    
 </body>
 </html>
