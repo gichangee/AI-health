@@ -122,6 +122,8 @@
                     if (status == "squat") 
                     {   
                         점프중 = true;
+                        var audio = new Audio('./mp3/jump.mp3');
+                        audio.play();
                     }
                     status = "stand"
             } 
@@ -131,11 +133,6 @@
             } 
             else if (prediction[2].probability.toFixed(2) == 1.00) 
             {
-                    if (status == "squat" || status == "stand") 
-                    {
-                        var audio = new Audio('bent.mp3');
-                        audio.play();
-                    }
                     status = "bent"
             }
     
@@ -282,7 +279,7 @@ function 충돌하냐(dino, cactus){
             UpdateScore();
         }
         
-        var audio2 = new Audio('die.mp3');
+        var audio2 = new Audio('./mp3/die.mp3');
         audio2.play();
     }
 }
@@ -303,7 +300,7 @@ document.addEventListener('keydown', function(e){
         점프중 = true;
         더블점프 = false;
 
-        var audio = new Audio('jump.mp3');
+        var audio = new Audio('./mp3/jump.mp3');
         audio.play();
     }
 })

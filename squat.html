@@ -21,17 +21,10 @@
 <div><canvas id="canvas"></canvas></div>
 <div id="label-container"></div>
 
- <!-- jquery cdn -->
-<script src="https://code.jquery.com/jquery-3.6.3.js" 
-integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" 
-crossorigin="anonymous"></script>
-
 
 <div id="container">
-    
     <span>0</span>개<br>
     <button id="reset">초기화</button>
-
 </div>
 
 
@@ -88,38 +81,6 @@ crossorigin="anonymous"></script>
         // Prediction 2: run input through teachable machine classification model
         const prediction = await model.predict(posenetOutput);
 
-
-        //추가
-  
-        const number = container.querySelector('span');
-        
-        if (prediction[0].probability.toFixed(2) > 0.90) 
-        {
-                if (status == "squat") 
-                {
-                    let count = Number(number.textContent)
-                    count++;
-                    number.textContent = count;
-
-                    var audio = new Audio(count % 10 + '.mp3');
-                    audio.play();
-                }
-                status = "stand"
-        } 
-        else if (prediction[1].probability.toFixed(2) == 1.00) 
-        {
-                status = "squat"
-        } 
-        else if (prediction[2].probability.toFixed(2) == 1.00) 
-        {
-                if (status == "squat" || status == "stand") 
-                {
-                    var audio = new Audio('bent.mp3');
-                    audio.play();
-                }
-                status = "bent"
-        }
-
         for (let i = 0; i < maxPredictions; i++) {
             const classPrediction =
                 prediction[i].className + ": " + prediction[i].probability.toFixed(2);
@@ -143,27 +104,15 @@ crossorigin="anonymous"></script>
     }
 </script>
 
-   
-
-    
-
-
 <script>
     let container = document.querySelector('#container');
     const number = container.querySelector('span');
-
     const reset = container.querySelector('#reset');
- 
     reset.addEventListener('click',function(){
         let count = Number(number.textContent)
-      
         count = 0;
-       
         number.textContent = count;
-     
     });
-
-
 </script>
 
 
