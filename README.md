@@ -1,8 +1,8 @@
- <h1 align="center"> ai trainer </h1>
+ <h1 align="center"> ai-health </h1>
 
 # About This Project
 
-**ai trainer** is a site that helps people who exercise alone.
+**ai-health** is a site that helps people who exercise alone.
 
 # Used Opensource
 
